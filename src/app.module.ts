@@ -15,6 +15,7 @@ import {
 } from '../prisma/generated/type-graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PrismaService } from './prisma.service';
 import { MyContext } from './shared/MyContext';
 import { AppConfigService } from './shared/providers/AppConfigService';
 
@@ -45,6 +46,7 @@ const prisma = new PrismaClient();
     TransactionCrudResolver,
     SoldItemCrudResolver,
     SoldItemRelationsResolver,
+    PrismaService,
   ],
 })
 export class AppModule {}
