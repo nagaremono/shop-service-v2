@@ -21,7 +21,7 @@ export class AuthService {
       throw new Error(AuthMessage.NONEXISTENT_ACCOUNT);
     }
 
-    req.session.userId = user.id;
+    req.session.user = user;
 
     return AuthMessage.CREDENTIALS_ACCEPTED;
   }

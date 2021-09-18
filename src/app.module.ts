@@ -33,7 +33,12 @@ const prisma = new PrismaClient();
       playground: true,
       introspection: true,
       path: '/',
-      context: ({ req, res }): MyContext => ({ prisma, req, res }),
+      context: ({ req, res }): MyContext => ({
+        prisma,
+        req,
+        res,
+        user: req.session.user,
+      }),
     }),
     AuthModule,
     PrismaModule,
