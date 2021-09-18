@@ -2,7 +2,15 @@ import {
   BadRequestException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Args, Ctx, Mutation, Resolver } from 'type-graphql';
+import {
+  Args,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from 'type-graphql';
+import { authChecker } from '../../middlewares/customAuthChecker';
 import { MyContext } from '../../shared/MyContext';
 import { AppConfigService } from '../../shared/providers/AppConfigService';
 import { AuthService } from './auth.service';
@@ -37,5 +45,11 @@ export class AuthResolver {
         return resolve(AuthMessage.LOGGED_OUT);
       });
     });
+  }
+
+  @UseMiddleware(authChecker)
+  @Query(() => String)
+  testauth() {
+    return 'ok';
   }
 }

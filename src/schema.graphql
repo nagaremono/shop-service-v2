@@ -44,6 +44,7 @@ enum AuthMessage {
   INCORRECT_CREDENTIALS
   LOGGED_OUT
   NONEXISTENT_ACCOUNT
+  UNAUTHORIZED
 }
 
 """
@@ -615,6 +616,7 @@ type Query {
   products(cursor: ProductWhereUniqueInput, distinct: [ProductScalarFieldEnum!], orderBy: [ProductOrderByWithRelationInput!], skip: Int, take: Int, where: ProductWhereInput): [Product!]!
   soldItem(where: SoldItemWhereUniqueInput!): SoldItem
   soldItems(cursor: SoldItemWhereUniqueInput, distinct: [SoldItemScalarFieldEnum!], orderBy: [SoldItemOrderByWithRelationInput!], skip: Int, take: Int, where: SoldItemWhereInput): [SoldItem!]!
+  testauth: String!
   transaction(where: TransactionWhereUniqueInput!): Transaction
   transactions(cursor: TransactionWhereUniqueInput, distinct: [TransactionScalarFieldEnum!], orderBy: [TransactionOrderByWithRelationInput!], skip: Int, take: Int, where: TransactionWhereInput): [Transaction!]!
   user(where: UserWhereUniqueInput!): User
