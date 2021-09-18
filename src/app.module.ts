@@ -16,6 +16,7 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SessionMiddleware } from './middlewares/session';
+import { AuthModule } from './modules/auth/auth.module';
 import { PrismaService } from './prisma.service';
 import { MyContext } from './shared/MyContext';
 import { AppConfigService } from './shared/providers/AppConfigService';
@@ -34,6 +35,7 @@ const prisma = new PrismaClient();
       path: '/',
       context: (): MyContext => ({ prisma }),
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

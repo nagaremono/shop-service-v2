@@ -183,6 +183,7 @@ type Mutation {
   deleteSoldItem(where: SoldItemWhereUniqueInput!): SoldItem
   deleteTransaction(where: TransactionWhereUniqueInput!): Transaction
   deleteUser(where: UserWhereUniqueInput!): User
+  login(email: String!, password: String!): String!
   updateManyProduct(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): AffectedRowsOutput!
   updateManySoldItem(data: SoldItemUpdateManyMutationInput!, where: SoldItemWhereInput): AffectedRowsOutput!
   updateManyTransaction(data: TransactionUpdateManyMutationInput!, where: TransactionWhereInput): AffectedRowsOutput!
