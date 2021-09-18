@@ -22,25 +22,28 @@ model Product {
 }
 
 model SoldItem {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @db.Timestamptz
-  updatedAt DateTime @updatedAt @db.Timestamptz
-  quantity  Int      @db.Integer
-  price     Decimal  @db.Decimal(17, 2)
-  name      String   @db.VarChar(500)
-  images    Json     @default("[]") @db.JsonB
-  product   Product  @relation(fields: [productId], references: [id])
-  productId String   @db.Uuid
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now()) @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @db.Timestamptz
+  quantity      Int         @db.Integer
+  price         Decimal     @db.Decimal(17, 2)
+  name          String      @db.VarChar(500)
+  images        Json        @default("[]") @db.JsonB
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     String      @db.Uuid
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId String      @db.Uuid
 }
 
 model Transaction {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt     DateTime @default(now()) @db.Timestamptz
-  updatedAt     DateTime @updatedAt @db.Timestamptz
-  totalAmount   Decimal  @db.Decimal(17, 2)
-  paymentStatus String   @db.VarChar(255)
-  customer      User     @relation(fields: [customerid], references: [id])
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime   @default(now()) @db.Timestamptz
+  updatedAt     DateTime   @updatedAt @db.Timestamptz
+  totalAmount   Decimal    @db.Decimal(17, 2)
+  paymentStatus String     @db.VarChar(255)
+  customer      User       @relation(fields: [customerid], references: [id])
   customerid    Int
+  soldItems     SoldItem[]
 }
 
 model User {
