@@ -42,6 +42,7 @@ type AggregateUser {
 enum AuthMessage {
   CREDENTIALS_ACCEPTED
   INCORRECT_CREDENTIALS
+  LOGGED_OUT
   NONEXISTENT_ACCOUNT
 }
 
@@ -190,6 +191,7 @@ type Mutation {
   deleteTransaction(where: TransactionWhereUniqueInput!): Transaction
   deleteUser(where: UserWhereUniqueInput!): User
   login(email: String!, password: String!): AuthMessage!
+  logout: AuthMessage!
   updateManyProduct(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): AffectedRowsOutput!
   updateManySoldItem(data: SoldItemUpdateManyMutationInput!, where: SoldItemWhereInput): AffectedRowsOutput!
   updateManyTransaction(data: TransactionUpdateManyMutationInput!, where: TransactionWhereInput): AffectedRowsOutput!
