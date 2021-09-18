@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import faker from 'faker';
+import argon2 from 'argon2';
 
 const prisma = new PrismaClient();
 
@@ -34,18 +35,22 @@ async function mainSeed() {
   const people = [];
 
   for (let i = 0; i < 10; i++) {
+    const username = faker.internet.userName();
+    const password = faker.internet.password();
+    const email = faker.internet.email();
+
     people.push(
       await prisma.user.create({
         data: {
-          username: faker.internet.userName(),
-          password: faker.internet.password(),
-          email: faker.internet.email(),
+          username,
+          password: await argon2.hash(password),
+          email,
         },
-      }),
+      })
     );
-  }
 
-  console.log(people.map(({ email, password }) => ({ email, password })));
+    console.log({ username, password, email });
+  }
 
   for (let i = 0; i < 200; i++) {
     const customer = people[genRandomInt(0, people.length)];

@@ -1,18 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CONTEXT } from '@nestjs/graphql';
-import { MyContext } from '../../shared/MyContext';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import argon2 from 'argon2';
 import { AuthMessage } from './dtos/AuthMessage';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private prismaService: PrismaService,
-    @Inject(CONTEXT) private context: MyContext
-  ) {}
+  constructor(private prismaService: PrismaService) {}
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string, req: Request) {
     const user = await this.prismaService.user.findUnique({
       where: { email },
     });
@@ -25,7 +21,7 @@ export class AuthService {
       throw new Error(AuthMessage.NONEXISTENT_ACCOUNT);
     }
 
-    this.context.req.session.userId = user.id;
+    req.session.userId = user.id;
 
     return AuthMessage.CREDENTIALS_ACCEPTED;
   }
