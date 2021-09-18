@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime   @default(now()) @db.Timestamptz
+  updatedAt DateTime   @updatedAt @db.Timestamptz
+  stock     Int        @db.Integer
+  price     Decimal    @db.Decimal(17, 2)
+  name      String     @db.VarChar(500)
+  images    Json       @default("[]") @db.JsonB
+  soldItems SoldItem[]
+}
+
+model SoldItem {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  quantity  Int      @db.Integer
+  price     Decimal  @db.Decimal(17, 2)
+  name      String   @db.VarChar(500)
+  images    Json     @default("[]") @db.JsonB
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String   @db.Uuid
+}
+
+model Transaction {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime @default(now()) @db.Timestamptz
+  updatedAt     DateTime @updatedAt @db.Timestamptz
+  totalAmount   Decimal  @db.Decimal(17, 2)
+  paymentStatus String   @db.VarChar(255)
+  customer      User     @relation(fields: [customerid], references: [id])
+  customerid    Int
+}
+
+model User {
+  id        Int           @id @default(autoincrement())
+  createdAt DateTime      @default(now()) @db.Timestamptz
+  updatedAt DateTime      @updatedAt @db.Timestamptz
+  username  String        @db.VarChar(500)
+  email     String        @unique @db.VarChar(255)
+  password  String        @db.VarChar(500)
+  purchases Transaction[]
+}
