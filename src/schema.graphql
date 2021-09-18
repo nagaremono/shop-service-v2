@@ -39,6 +39,12 @@ type AggregateUser {
   _sum: UserSumAggregate
 }
 
+enum AuthMessage {
+  CREDENTIALS_ACCEPTED
+  INCORRECT_CREDENTIALS
+  NONEXISTENT_ACCOUNT
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -183,7 +189,7 @@ type Mutation {
   deleteSoldItem(where: SoldItemWhereUniqueInput!): SoldItem
   deleteTransaction(where: TransactionWhereUniqueInput!): Transaction
   deleteUser(where: UserWhereUniqueInput!): User
-  login(email: String!, password: String!): String!
+  login(email: String!, password: String!): AuthMessage!
   updateManyProduct(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): AffectedRowsOutput!
   updateManySoldItem(data: SoldItemUpdateManyMutationInput!, where: SoldItemWhereInput): AffectedRowsOutput!
   updateManyTransaction(data: TransactionUpdateManyMutationInput!, where: TransactionWhereInput): AffectedRowsOutput!

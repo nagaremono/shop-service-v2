@@ -17,7 +17,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SessionMiddleware } from './middlewares/session';
 import { AuthModule } from './modules/auth/auth.module';
-import { PrismaService } from './prisma.service';
+import { PrismaModule } from './modules/prisma/prisma.module';
 import { MyContext } from './shared/MyContext';
 import { AppConfigService } from './shared/providers/AppConfigService';
 
@@ -33,9 +33,10 @@ const prisma = new PrismaClient();
       playground: true,
       introspection: true,
       path: '/',
-      context: (): MyContext => ({ prisma }),
+      context: ({ req, res }): MyContext => ({ prisma, req, res }),
     }),
     AuthModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [
@@ -49,7 +50,6 @@ const prisma = new PrismaClient();
     TransactionCrudResolver,
     SoldItemCrudResolver,
     SoldItemRelationsResolver,
-    PrismaService,
   ],
 })
 export class AppModule {
