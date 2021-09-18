@@ -10,29 +10,30 @@ function genRandomInt(min: number, max: number) {
 }
 
 async function mainSeed() {
-  prisma.product.deleteMany({});
-  prisma.soldItem.deleteMany({});
-  prisma.transaction.deleteMany({});
-  prisma.user.deleteMany({});
+  await prisma.$transaction([
+    prisma.soldItem.deleteMany(),
+    prisma.product.deleteMany(),
+    prisma.transaction.deleteMany(),
+    prisma.user.deleteMany(),
+  ]);
 
   const product = [];
 
-  for (let i = 0; i < 5; i++) {
-    product.push(
-      await prisma.product.create({
-        data: {
-          name: faker.commerce.productName(),
-          price: faker.commerce.price(1000, 999999, 2),
-          stock: genRandomInt(10, 1000),
-          images: [faker.random.image()],
-        },
-      }),
-    );
+  for (let i = 0; i < 100; i++) {
+    const newProduct = await prisma.product.create({
+      data: {
+        name: faker.commerce.productName(),
+        price: faker.commerce.price(1000, 999999, 2),
+        stock: genRandomInt(10, 10000),
+        images: [faker.random.image()],
+      },
+    });
+    product.push(newProduct);
   }
 
   const people = [];
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 10; i++) {
     people.push(
       await prisma.user.create({
         data: {
@@ -46,10 +47,10 @@ async function mainSeed() {
 
   console.log(people.map(({ email, password }) => ({ email, password })));
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 200; i++) {
     const customer = people[genRandomInt(0, people.length)];
-    const purchasedProduct = product[genRandomInt(0, product.length)];
-    const boughtQuantity = genRandomInt(1, purchasedProduct.stock);
+    const purchasedProduct = product[i / 2];
+    const boughtQuantity = 5;
 
     await prisma.transaction.create({
       data: {

@@ -1,0 +1,1 @@
+export { ProductSoldItemsArgs } from "./ProductSoldItemsArgs";

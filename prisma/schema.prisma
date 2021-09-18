@@ -55,3 +55,8 @@ model User {
   password  String        @db.VarChar(500)
   purchases Transaction[]
 }
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "../prisma/generated/type-graphql"
+}
