@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   Args,
@@ -10,9 +11,11 @@ import {
   Resolver,
   UseMiddleware,
 } from 'type-graphql';
+import { User } from '../../../prisma/generated/type-graphql';
 import { authChecker } from '../../middlewares/customAuthChecker';
 import { MyContext } from '../../shared/MyContext';
 import { AppConfigService } from '../../shared/providers/AppConfigService';
+import { PrismaService } from '../prisma/prisma.service';
 import { AuthService } from './auth.service';
 import { AuthMessage } from './dtos/AuthMessage';
 import { LoginArgs } from './dtos/LoginArgs';
@@ -21,7 +24,8 @@ import { LoginArgs } from './dtos/LoginArgs';
 export class AuthResolver {
   constructor(
     private authService: AuthService,
-    private appConfigService: AppConfigService
+    private appConfigService: AppConfigService,
+    private prismaService: PrismaService
   ) {}
 
   @Mutation(() => AuthMessage)
@@ -44,6 +48,17 @@ export class AuthResolver {
 
         return resolve(AuthMessage.LOGGED_OUT);
       });
+    });
+  }
+
+  @UseMiddleware(authChecker)
+  @Query(() => User, { nullable: true })
+  me(@Ctx() { req }: MyContext) {
+    if (!req.session.user) {
+      throw new UnauthorizedException();
+    }
+    return this.prismaService.user.findUnique({
+      where: { id: req.session.user.id },
     });
   }
 

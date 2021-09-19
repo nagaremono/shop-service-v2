@@ -612,6 +612,7 @@ type Query {
   groupBySoldItem(by: [SoldItemScalarFieldEnum!]!, having: SoldItemScalarWhereWithAggregatesInput, orderBy: [SoldItemOrderByWithAggregationInput!], skip: Int, take: Int, where: SoldItemWhereInput): [SoldItemGroupBy!]!
   groupByTransaction(by: [TransactionScalarFieldEnum!]!, having: TransactionScalarWhereWithAggregatesInput, orderBy: [TransactionOrderByWithAggregationInput!], skip: Int, take: Int, where: TransactionWhereInput): [TransactionGroupBy!]!
   groupByUser(by: [UserScalarFieldEnum!]!, having: UserScalarWhereWithAggregatesInput, orderBy: [UserOrderByWithAggregationInput!], skip: Int, take: Int, where: UserWhereInput): [UserGroupBy!]!
+  me: User
   product(where: ProductWhereUniqueInput!): Product
   products(cursor: ProductWhereUniqueInput, distinct: [ProductScalarFieldEnum!], orderBy: [ProductOrderByWithRelationInput!], skip: Int, take: Int, where: ProductWhereInput): [Product!]!
   soldItem(where: SoldItemWhereUniqueInput!): SoldItem
