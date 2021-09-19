@@ -27,6 +27,10 @@ const prisma = new PrismaClient();
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeGraphQLModule.forRoot({
+      cors: {
+        origin: 'http://localhost:3000',
+        credentials: true,
+      },
       emitSchemaFile: path.join(process.cwd(), 'src/schema.graphql'),
       validate: false,
       dateScalarMode: 'isoDate',
