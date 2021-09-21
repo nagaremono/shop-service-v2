@@ -20,6 +20,7 @@ import { PrismaModule } from './modules/prisma/prisma.module';
 import { PrismaService } from './modules/prisma/prisma.service';
 import { MyContext } from './shared/MyContext';
 import { AppConfigService } from './shared/providers/AppConfigService';
+import { RedisProvider } from './shared/providers/redis.provider';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { AppConfigService } from './shared/providers/AppConfigService';
     TransactionCrudResolver,
     SoldItemCrudResolver,
     SoldItemRelationsResolver,
+    RedisProvider,
   ],
 })
 export class AppModule {

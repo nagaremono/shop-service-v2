@@ -2,29 +2,24 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 import { AppConfigService } from '../shared/providers/AppConfigService';
-import Redis from 'ioredis';
 import connectRedis from 'connect-redis';
 import { THREE_MONTH_IN_MILISECONDS } from '../shared/constants';
+import { RedisProvider } from '../shared/providers/redis.provider';
 
 const RedisStore = connectRedis(session);
 
 @Injectable()
 export class SessionMiddleware implements NestMiddleware {
-  private readonly redis;
-  private readonly cookieName;
-  private readonly sessionSecret;
-
-  constructor(private readonly appConfigService: AppConfigService) {
-    this.redis = new Redis(this.appConfigService.redisUrl);
-    this.cookieName = this.appConfigService.cookieName;
-    this.sessionSecret = this.appConfigService.sessionSecret;
-  }
+  constructor(
+    private readonly appConfigService: AppConfigService,
+    private readonly redisProvider: RedisProvider
+  ) {}
 
   use(req: Request, res: Response, next: NextFunction): void {
     session({
-      name: this.cookieName,
-      store: new RedisStore({ client: this.redis, disableTouch: true }),
-      secret: this.sessionSecret,
+      name: this.appConfigService.cookieName,
+      store: new RedisStore({ client: this.redisProvider, disableTouch: true }),
+      secret: this.appConfigService.sessionSecret,
       resave: false,
       cookie: {
         maxAge: THREE_MONTH_IN_MILISECONDS,
