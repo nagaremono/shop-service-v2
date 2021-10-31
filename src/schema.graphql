@@ -3,6 +3,11 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input AddToCartInput {
+  productId: String!
+  quantity: Int!
+}
+
 type AffectedRowsOutput {
   count: Int!
 }
@@ -45,6 +50,11 @@ enum AuthMessage {
   LOGGED_OUT
   NONEXISTENT_ACCOUNT
   UNAUTHORIZED
+}
+
+type CartItem {
+  product: Product!
+  quantity: Int!
 }
 
 """
@@ -175,6 +185,7 @@ input JsonWithAggregatesFilter {
 }
 
 type Mutation {
+  addToCart(data: AddToCartInput!): [CartItem!]
   createManyProduct(data: [ProductCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManySoldItem(data: [SoldItemCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyTransaction(data: [TransactionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -608,6 +619,7 @@ type Query {
   findFirstSoldItem(cursor: SoldItemWhereUniqueInput, distinct: [SoldItemScalarFieldEnum!], orderBy: [SoldItemOrderByWithRelationInput!], skip: Int, take: Int, where: SoldItemWhereInput): SoldItem
   findFirstTransaction(cursor: TransactionWhereUniqueInput, distinct: [TransactionScalarFieldEnum!], orderBy: [TransactionOrderByWithRelationInput!], skip: Int, take: Int, where: TransactionWhereInput): Transaction
   findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): User
+  getMyCart: [CartItem!]!
   groupByProduct(by: [ProductScalarFieldEnum!]!, having: ProductScalarWhereWithAggregatesInput, orderBy: [ProductOrderByWithAggregationInput!], skip: Int, take: Int, where: ProductWhereInput): [ProductGroupBy!]!
   groupBySoldItem(by: [SoldItemScalarFieldEnum!]!, having: SoldItemScalarWhereWithAggregatesInput, orderBy: [SoldItemOrderByWithAggregationInput!], skip: Int, take: Int, where: SoldItemWhereInput): [SoldItemGroupBy!]!
   groupByTransaction(by: [TransactionScalarFieldEnum!]!, having: TransactionScalarWhereWithAggregatesInput, orderBy: [TransactionOrderByWithAggregationInput!], skip: Int, take: Int, where: TransactionWhereInput): [TransactionGroupBy!]!

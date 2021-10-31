@@ -18,6 +18,7 @@ import { SessionMiddleware } from './middlewares/session';
 import { AuthModule } from './modules/auth/auth.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { PrismaService } from './modules/prisma/prisma.service';
+import { PurchaseModule } from './modules/purchase/purchase.module';
 import { MyContext } from './shared/MyContext';
 import { AppConfigService } from './shared/providers/AppConfigService';
 import { RedisProvider } from './shared/providers/redis.provider';
@@ -49,6 +50,7 @@ import { RedisProvider } from './shared/providers/redis.provider';
     }),
     AuthModule,
     PrismaModule,
+    PurchaseModule,
   ],
   controllers: [AppController],
   providers: [
